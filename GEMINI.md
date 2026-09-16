@@ -34,15 +34,14 @@
 
 ---
 
-## 3. Audited Performance Benchmarks
+## 3. Audited Performance Benchmarks (v1.0 Thesis Baseline vs. v2.0 Calibrated Physics)
 
-| Metric | Air-Source (ASHP) | Ground-Source (GSHP) | Water-Source (WSHP) |
-|---|:---:|:---:|:---:|
-| **Mean Annual COP [-]** | 4.06 | 4.11 | **4.29** |
-| **Peak Compressor Demand [kW]** | 82.04 | 73.18 | **62.71** |
-| **6-Year Total Electricity [MWh]** | 886.1 | 877.9 | **827.1** |
-| **Cumulative Savings vs ASHP** | Baseline | 8.2 MWh / £1,870 | **59.0 MWh / £13,569** |
-| **Peak Load Reduction vs ASHP** | Baseline | -10.8% | **-23.6%** |
+| Metric | Version | Air-Source (ASHP) | Ground-Source (GSHP) | Water-Source (WSHP) | Key Outcome |
+|---|---|:---:|:---:|:---:|:---:|
+| **Mean Annual COP [-]** | **v1.0 Baseline**<br>*v2.0 Calibrated* | 4.06<br>**4.35** | 4.11<br>**4.39** | **4.29**<br>**4.52** | WSHP maintains highest COP across both models |
+| **Peak Compressor Demand [kW]** | **v1.0 Baseline**<br>*v2.0 Calibrated* | 82.04<br>**74.38** | 73.18<br>**64.90** | **62.71**<br>**58.82** | **20.9% to 23.6%** peak grid demand reduction |
+| **6-Year Total Electricity [MWh]** | **v1.0 Baseline**<br>*v2.0 Calibrated* | 886.1<br>**878.5** | 877.9<br>**859.8** | **827.1**<br>**825.4** | **53.1 to 59.0 MWh** avoided grid electricity |
+| **6-Year OPEX Savings (£0.23/kWh)** | **v1.0 Baseline**<br>*v2.0 Calibrated* | Baseline | £1,870<br>£4,301 | **£13,569**<br>**£12,213** | **£12.2k to £13.6k** operational savings |
 
 ---
 
@@ -82,3 +81,4 @@ BEng-CEA-Heatpump/
    ```bash
    jupyter nbconvert --execute --inplace notebooks/*.ipynb
    ```
+

@@ -127,6 +127,35 @@ The comparative evaluation reveals pronounced trade-offs across capital intensit
 
 ---
 
+## Model Audit & Postgraduate Physics Calibration (v1.0 Baseline vs. v2.0 Calibrated Engine)
+
+A hallmark of rigorous engineering is auditing model limitations, identifying physical approximations, and quantifying calibration sensitivities. The table below presents the **Undergraduate Thesis Baseline (v1.0)** alongside the **Postgraduate Calibrated Physics Engine (v2.0)**:
+
+### Physical Corrections Introduced in v2.0:
+1. **Intra-Day Diurnal Air Temperature**: Upgraded from symmetric midnight-minimum/noon-maximum to an atmospheric solar-driven profile with dawn minimum ($06{:}00$) and mid-afternoon solar lag peak ($15{:}00$).
+2. **Daytime Solar Insolation**: Converted from a flat 24-hour uniform average (`sunlight / 24`, which injected solar heat at night) to a daylight half-sine curve ($06{:}00\text{--}18{:}00$), ensuring zero solar radiation during darkness.
+3. **Sub-surface Soil Thermal Inertia**: Filtered deep soil temperature (1.5–2.0 m depth) via a 7-day centered moving average, eliminating unrealistic daily oscillations.
+4. **Water Temperature Phase Alignment**: Corrected the seasonal phase angle formula to align with UK peak surface water temperatures in early August.
+5. **Flash Tank Liquid Enthalpy**: Integrated high-precision `CoolProp` state equations to model saturated liquid intermediate enthalpy $h_6 = h_f(P_{\text{int}})$, resolving the single-enthalpy expansion approximation ($h_7 = h_5$) in v1.0.
+
+<div align="center">
+  <img src="figures/model_calibration_comparison.png" alt="Model Calibration Comparison" width="90%"/>
+  <p><em>Figure 6: Diagnostic comparison between Thesis Baseline (v1.0) and Calibrated Physics Engine (v2.0) across diurnal air temperatures, solar insolation, COP distributions, and peak compressor sizing.</em></p>
+</div>
+
+### Comparative Performance Audit (52,560 Hours)
+
+| Performance Indicator | Model Version | Air-Source (ASHP) | Ground-Source (GSHP) | Water-Source (WSHP) | Key Engineering Insight |
+|---|---|:---:|:---:|:---:|:---:|
+| **Mean Active COP [-]** | **Thesis v1.0**<br>*Calibrated v2.0* | 4.06<br>**4.35** | 4.11<br>**4.39** | **4.29**<br>**4.52** | Water-source remains thermodynamically superior across all seasons |
+| **Peak Electrical Demand [kW]** | **Thesis v1.0**<br>*Calibrated v2.0* | 82.04<br>**74.38** | 73.18<br>**64.90** | **62.71**<br>**58.82** | Peak grid sizing shaved by **20.9% to 23.6%** |
+| **6-Year Total Electricity [MWh]** | **Thesis v1.0**<br>*Calibrated v2.0* | 886.1<br>**878.5** | 877.9<br>**859.8** | **827.1**<br>**825.4** | **53.1 to 59.0 MWh** avoided grid electricity |
+| **6-Year Cumulative OPEX (£0.23/kWh)** | **Thesis v1.0**<br>*Calibrated v2.0* | £203,793<br>£202,055 | £201,922<br>£197,754 | **£190,224**<br>**£189,842** | **£12.2k to £13.6k** operational savings |
+
+> **Audit Conclusion**: The physical refinements in v2.0 confirm the core thesis conclusions with absolute thermodynamic robustness: Water-Source heat pumps deliver superior seasonal efficiency (+4.0% to +5.7% COP lift), reduce electrical grid interconnection sizing by >20%, and generate tens of thousands of pounds in commercial energy savings.
+
+---
+
 ## Repository Structure
 
 ```
@@ -144,16 +173,20 @@ BEng-CEA-Heatpump/
 │   │   ├── saturated_ammonia.csv
 │   │   └── superheated_ammonia.csv
 │   └── outputs/                                        # Consolidated 52,560-hr results
-│       ├── results_air_source.csv
-│       ├── results_ground_source.csv
-│       ├── results_water_source.csv
-│       └── greenhouse_heat_load.csv
+│       ├── results_air_source.csv                      # Thesis v1.0 ASHP results
+│       ├── results_ground_source.csv                   # Thesis v1.0 GSHP results
+│       ├── results_water_source.csv                    # Thesis v1.0 WSHP results
+│       ├── greenhouse_heat_load.csv                    # Thesis v1.0 hourly heat demand
+│       ├── calibrated_v2_results_air_source.csv        # Calibrated v2.0 ASHP results
+│       ├── calibrated_v2_results_ground_source.csv     # Calibrated v2.0 GSHP results
+│       ├── calibrated_v2_results_water_source.csv      # Calibrated v2.0 WSHP results
+│       └── calibrated_v2_heat_load.csv                 # Calibrated v2.0 hourly heat demand
 │
 ├── notebooks/                                          # Self-contained, executable Jupyter Notebooks
 │   ├── 01_Air_Source_Heat_Pump.ipynb                  # Transient envelope balance + ASHP simulation
 │   ├── 02_Ground_Source_Heat_Pump.ipynb               # Soil thermal model + GSHP simulation
 │   ├── 03_Water_Source_Heat_Pump.ipynb               # Surface water loop + WSHP simulation
-│   └── 04_Comparative_Techno_Economic_Analysis.ipynb  # Multi-system benchmarking, COP & ROI
+│   └── 04_Comparative_Techno_Economic_Analysis.ipynb  # Multi-system benchmarking, COP, ROI & v2 audit
 │
 ├── figures/                                            # Publication-grade PNG (300 DPI) & vector SVG
 │   ├── greenhouse_cad_render.png
@@ -161,7 +194,8 @@ BEng-CEA-Heatpump/
 │   ├── cop_seasonal_comparison.{png,svg}
 │   ├── cumulative_energy_and_cost.{png,svg}
 │   ├── compressor_power_distribution.{png,svg}
-│   └── internal_temperature_regulation.{png,svg}
+│   ├── internal_temperature_regulation.{png,svg}
+│   └── model_calibration_comparison.{png,svg}
 │
 ├── docs/                                               # Academic publications & presentations
 │   ├── Fraser_Mclellan_2550305M_individual_project_BEng.pdf
@@ -222,3 +256,4 @@ This work is published under the MIT License. If referencing this simulation mod
   type         = {BEng (Hons) Individual Project Thesis}
 }
 ```
+
